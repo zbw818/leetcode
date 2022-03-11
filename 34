@@ -1,3 +1,5 @@
+//方法一：找到的左边界是目标值左边元素的索引，或者是数组中没有目标值时小于目标值的最大元素的索引；
+//       找到的右边界是目标值右边元素的索引，或者是数组中没有目标值时大于目标值的最小元素的索引；所以，如果包含目标值，则右边界减去左边界的值必定大于1，否则表明数组中不包含目标值。不需要遍历容器
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
@@ -7,28 +9,6 @@ public:
             return {left+1,right-1};
         }
         return {-1,-1};
-        /*不需要遍历容器确认target是否包含在内，因为如果包含，则right-left肯定大于1。
-        bool flag = false;
-        for(vector<int>::iterator it=m.begin();it!=m.end();it++){
-            if(*it==target){
-                flag=true;
-                break;
-            }
-        }
-        if(flag){
-            //m.push_back(left+1);
-            //m.push_back(right-1);
-            m.push_back(-1);
-            m.push_back(-1);
-        }
-        else{
-            m.push_back(left+1);
-            m.push_back(right-1);
-            //m.push_back(-1);
-            //m.push_back(-1);
-        }
-        return m;
-        */
     }
 
     int findleft(vector<int>& nums, int target){
@@ -61,3 +41,57 @@ public:
         return left;
     }
 };
+
+//方法二：找到的左边界是目标值的最小索引，或者是数组中没有目标值时大于目标值的最小元素的索引；
+//       找到的右边界是目标值的最大索引，或者是数组中没有目标值时小于目标值的最大元素的索引；所以，如果不包含目标值，则左边界减去右边界的值必定等于1，否则表明数组中包含目标值。不需要遍历容器
+/*
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int left=findleft(nums, target);
+        int right=findright(nums, target);
+        if(left==right+1){
+            return {-1,-1};
+        }
+        return {left,right};
+    }
+
+    int findleft(vector<int>& nums, int target){
+        int left=0;
+        int right=nums.size()-1;
+        
+        while(left<=right){
+            int mid = (left+right)/2;
+            if(nums[mid]<target){
+                left = mid+1;
+            }
+            else{
+                right = mid-1;
+            }
+        }
+        return left;
+    }
+    int findright(vector<int>& nums, int target){
+        int left=0;
+        int right=nums.size()-1;
+        while(left<=right){
+            int mid = (left+right)/2;
+            if(nums[mid]>target){
+                right = mid-1;
+            }
+            else{
+                left = mid+1;
+            }
+        }
+        return right;
+    }
+};
+*/
+
+
+
+
+
+
+
+
