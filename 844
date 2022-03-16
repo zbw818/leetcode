@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool backspaceCompare(string s, string t) {
+        return restr(s)==restr(t);
+    }
+    
+    //两个字符串需要进行同样的简化操作（也就是通过退格符删除），所以考虑将此操作写成一个函数会是一个不错的选择
+    string restr(string str){
+        vector<char>restring;
+        for(int i=0;i<str.size();i++){
+            if(str[i]!='#'){
+                restring.push_back(str[i]);
+            }
+            else{
+                if(restring.size()==0){
+                    continue;
+                }
+                else{restring.pop_back();};
+            }
+        }
+        return string(restring.begin(),restring.end());
+    }
+};
