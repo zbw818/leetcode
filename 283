@@ -1,0 +1,25 @@
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int left=0;
+        int right=0;int count=0;
+        while(right<nums.size()){
+            if(nums[right]!=0){
+            nums[left]=nums[right];
+            left++;
+            }
+            else{count++;}
+            right++;
+        }
+        //方法一
+        nums.resize(left);
+        nums.resize(right);
+        //方法二
+        /*
+        while(count>0)
+        {
+            nums[left-1+count]=0;
+            count--;
+        }*/
+    }
+};
