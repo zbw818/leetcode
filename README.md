@@ -1,2 +1,2 @@
 # leetcode
-notebook
+notebook of leetcode code
