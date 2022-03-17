@@ -28,8 +28,10 @@ public:
         return {};
     }
 };
+*/
 
-//unordered_map
+//unordered_map容器
+/*
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
