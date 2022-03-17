@@ -1,0 +1,42 @@
+//滑动窗口
+/*class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int left=0;
+        int leng=INT32_MAX;
+        int subleng=0;
+        int sum=0;
+        for(int right=0;right<nums.size();right++){
+            sum += nums[right];
+            while(sum>=target){
+                subleng=right-left+1;
+                leng= leng < subleng ? leng:subleng; 
+                sum-=nums[left];
+                left++;
+            }
+        }
+        return leng < INT32_MAX ? leng:0;
+    }
+};
+*/
+
+//先使用前缀和计算数组元素和，然后对和的数组使用滑动窗口
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        vector<int>presum;
+        presum.resize(nums.size()+1);
+        for(int i=1;i<presum.size();i++){
+            presum[i]=presum[i-1]+nums[i-1];
+        }
+        int leng=INT32_MAX;
+        int left=0;
+        for(int right=1;right<presum.size();right++){
+            while((presum[right]-presum[left])>=target){
+                leng=leng<(right-left) ? leng:(right-left);
+                left++;
+            }
+        }
+        return leng < INT32_MAX ? leng:0;
+    }
+};
