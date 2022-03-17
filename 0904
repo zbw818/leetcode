@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        unordered_map<int,int>m;
+        int left=0;int right=0;
+        int subleng=0;int leng=0;
+        //for(int right=0;right<fruits.size();right++){
+        while(right<fruits.size()){
+            m[fruits[right]]++;
+            subleng++;
+            while(m.size()>2){
+                m[fruits[left]]--;
+                if(m[fruits[left]]==0){
+                    m.erase(fruits[left]);
+                }
+                subleng--;
+                left++;
+            }
+            leng=leng<subleng ? subleng : leng;
+            right++;
+        }
+        return leng;
+    }
+};
