@@ -1,0 +1,30 @@
+//计算元素平方，然后借用排序函数sort()完成平方后的元素排序
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        int n=nums.size();
+        for(vector<int>::iterator it=nums.begin();it!=nums.end();it++){
+            *it=(*it)*(*it);
+        }
+        sort(nums.begin(),nums.end());
+        return nums;
+    }
+};
+
+/*利用有序容器的元素有序性，直接完成元素平方后的排序。注意容器的key值要可重复，所以使用multimap
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        multimap<int, int>m;
+        int n = nums.size();
+        for (int i = 0; i < nums.size(); i++) {
+            m.insert(make_pair(nums[i] * nums[i], i));
+        }
+        vector<int>renums;
+        for (multimap<int, int>::iterator it = m.begin(); it != m.end(); it++) {
+            renums.push_back(it->first);
+        }
+        return renums;
+    }
+};
+*/
