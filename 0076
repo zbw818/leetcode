@@ -1,0 +1,39 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char,int>um;
+        unordered_map<char,int>umt;
+        for(char c: t){
+            umt[c]++;
+        }
+        int left=0;
+        int right=0;
+        int leng=INT32_MAX;
+        int counter=0;
+        int start=0;
+        while(right<s.size()){
+            if(umt.count(s[right])){
+                um[s[right]]++;
+                if(um[s[right]]==umt[s[right]]){
+                    counter++;
+                }
+            }
+
+            while(counter==umt.size()){
+                if((right-left+1)<leng){
+                    start=left;
+                    leng=right-left+1;
+                }
+                if(umt.count(s[left])){
+                    if(um[s[left]]==umt[s[left]]){
+                        counter--;
+                    }
+                    um[s[left]]--;
+                }
+                left++;
+            }
+            right++;
+        }
+        return leng==INT32_MAX ? "" : s.substr(start,leng);
+    }
+};
