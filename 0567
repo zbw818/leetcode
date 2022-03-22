@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        unordered_map<char,int>window;
+        unordered_map<char,int>need;
+        for(char c : s1){
+            need[c]++;
+        }
+        int left=0;
+        int right=0;
+        int counter=0;
+        while(right<s2.size()){
+            if(need.count(s2[right])){
+                window[s2[right]]++;
+                if(window[s2[right]]==need[s2[right]]){
+                    counter++;
+                }           
+            }
+
+            while(right-left+1 >= s1.size()){
+                if(counter == need.size()){
+                    return true;
+                }
+                if(need.count(s2[left])){
+                    if(window[s2[left]]==need[s2[left]]){
+                        counter--;
+                    }
+                    window[s2[left]]--;
+                }
+                left++;
+            }
+            right++;
+        }
+        return false;
+    }
+};
