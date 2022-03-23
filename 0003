@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_map<char,int>window;
+        int left=0;
+        int right=0;
+        int counter=0;
+        int leng=0;
+        for(;right<s.size();right++){
+            window[s[right]]++;
+            counter++;
+            if(counter>window.size()){
+                leng=leng<(right-left) ? (right-left) : leng;
+                window[s[left]]--;
+                if(window[s[left]]==0){
+                    window.erase(s[left]);
+                }
+                left++;
+                counter--;
+            }
+        }
+        return leng<(right-left) ? (right-left) : leng;
+    }
+};
