@@ -1,0 +1,60 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+ //方法一，单独删除头结点
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        /*移除头结点和移除其他节点的操作是不一样的，
+        因为链表的其他节点都是通过前一个节点来移除当前节点，
+        而头结点没有前一个节点*/
+
+        //删除头结点
+        while(head!=NULL&&head->val==val){
+            ListNode*tem=head;
+            head=head->next;
+            delete tem;
+        }
+        //删除非头结点
+        ListNode* cur=head;
+        if(cur==NULL){
+            return head;
+        }
+        while(cur->next!=NULL){
+            if(cur->next->val==val){
+                ListNode* tem=cur->next;
+                cur->next=cur->next->next;
+                delete tem;
+            }
+            else{cur=cur->next;}
+        }
+        return head;
+    }
+};
+
+//方法二，设置虚拟头结点，所有结点同样的删除操作
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode* vhead=new ListNode(0);
+        vhead->next=head;
+
+        ListNode* cur=vhead;
+        while(cur->next!=NULL){
+            if(cur->next->val==val){
+                ListNode*tem=cur->next;
+                cur->next=cur->next->next;
+                delete tem;
+            }
+            else{cur=cur->next;}
+        }
+        return vhead->next;
+    }
+};
