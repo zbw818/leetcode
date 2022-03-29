@@ -1,0 +1,85 @@
+class MyLinkedList {
+public:
+    struct LinkedNode{
+        int val;
+        LinkedNode* next;
+        LinkedNode(int val){
+            this->val=val;
+            this->next=nullptr;
+        }
+    };
+    MyLinkedList() {
+        _vhead=new LinkedNode(0);
+        _size=0;
+    }
+    
+    int get(int index) {
+        if(index<0||index>(_size-1)){
+            return -1;
+        }
+        LinkedNode* tem=_vhead->next;
+        while(index--){
+            tem=tem->next;
+        }
+        return tem->val;
+    }
+    
+    void addAtHead(int val) {
+        LinkedNode* tem=new LinkedNode(val);
+        tem->next=_vhead->next;
+        _vhead->next=tem;
+        _size++;
+    }
+    
+    void addAtTail(int val) {
+        LinkedNode* tem=new LinkedNode(val);
+        LinkedNode* cur=_vhead;
+        while(cur->next){
+            cur=cur->next;
+        }
+        cur->next=tem;
+        _size++;
+    }
+    void addAtIndex(int index, int val) {
+        if (index > _size) {
+            return;
+        }
+        
+        LinkedNode* tem = new LinkedNode(val);
+        LinkedNode* cur = _vhead;
+        while(index--) {
+            cur = cur->next;
+        }
+        tem->next = cur->next;
+        cur->next = tem;
+        _size++;
+    }
+    
+    void deleteAtIndex(int index) {
+        if(index>=_size||index<0){
+            return;
+        }
+        
+        LinkedNode* tem=_vhead;
+        while(index--){
+            tem=tem->next;
+        }
+        LinkedNode* cur=tem->next;
+        tem->next=tem->next->next;
+        delete cur;
+        _size--;
+    }
+private:
+    int _size;
+    LinkedNode* _vhead;
+};
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList* obj = new MyLinkedList();
+ * int param_1 = obj->get(index);
+ * obj->addAtHead(val);
+ * obj->addAtTail(val);
+ * obj->addAtIndex(index,val);
+ * obj->deleteAtIndex(index);
+ */
