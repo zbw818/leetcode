@@ -8,6 +8,7 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+ //方法一，双指针法，遍历反转
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
@@ -23,4 +24,18 @@ public:
         }
         return left;
     }
+};
+//方法二，递归函数
+class Solution{
+public:
+    ListNode* reverse(ListNode*left, ListNode* right){
+        if(right==NULL) return left;
+        ListNode* tem=right->next;
+        right->next=left;
+        return reverse(right,tem);        
+    }
+    ListNode* reverseList(ListNode* head){
+        return reverse(NULL,head);
+    }
+    
 };
