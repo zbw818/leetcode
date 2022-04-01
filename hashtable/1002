@@ -1,0 +1,54 @@
+class Solution {
+public:
+    vector<string> commonChars(vector<string>& words) {
+        vector<> result;
+        int hash[26]={0};
+        for(int i=0;i<words[0].size();i++){
+            hash[words[0][i]-'a']++;
+        }
+
+        int hash_otherstr[26]={0};
+        for(int i=0;i<words.size();i++){
+            memset(hash_otherstr,0,26*sizeof(int));
+            for(int j=0;j<words[i].size();j++){
+                hash_otherstr[words[i][j]-'a']++;
+            }
+            for(int k=0;k<26;k++){
+                hash[k]=min(hash[k],hash_otherstr[k]);
+            }
+        }
+        for (int i = 0; i < 26; i++) {
+            while (hash[i] != 0) {
+                string s(1, i + 'a'); 
+                result.push_back(s);
+                hash[i]--;
+            }
+        }
+
+        return result;
+    }
+};
+
+// class Solution {
+// public:
+//     vector<string> commonChars(vector<string>& words) {
+//         vector<int> mintimes(26); 
+//         for (char c : words[0]) mintimes[c - 'a']++;
+
+//         vector<int> times(26);
+//         for (int i = 1; i < words.size(); i++) {
+//             fill(times.begin(), times.end(), 0); 
+//             for (char c : words[i]) times[c - 'a']++;
+//             for (int j = 0; j < 26; j++) {
+//                 mintimes[j] = min(mintimes[j], times[j]); 
+//             }
+//         }
+//         vector<string> ans;
+//         for (int i = 0; i < 26; i++) {
+//             for (int j = 0; j < mintimes[i]; j++) {
+//                 ans.emplace_back(1, i + 'a');
+//             }
+//         }
+//         return ans;
+//     }
+// };
