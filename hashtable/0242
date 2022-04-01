@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        unordered_map<char,int>umt;
+        for(char c : t){
+            umt[c]++;
+        }
+
+        int counter=umt.size();
+        int leng=0;
+        for(char c : s){
+            if(umt.count(c)){
+                umt[c]--;
+            }
+            if(umt[c]==0){
+                umt.erase(c);
+                counter--;
+            }
+            leng++;
+            if(umt.empty()) break;
+        }
+        
+        if(umt.empty()&&leng==s.length()){
+            return true;
+        }
+        return false;
+    }
+};
