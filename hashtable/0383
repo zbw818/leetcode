@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        unordered_map<char,int>um;
+        for(char ch : ransomNote) um[ch]++;
+        
+        for(int i=0;i<magazine.size();i++){
+            if(um.find(magazine[i])!=um.end()){
+                um[magazine[i]]--;
+                if(!um[magazine[i]]) um.erase(magazine[i]);
+            }
+            if(!um.size()) return true;
+        }
+        return false;
+    }
+};
