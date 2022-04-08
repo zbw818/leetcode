@@ -1,0 +1,33 @@
+class Solution {
+public:
+    string reverseStr(string s, int k) {
+        for(int i=0;i<s.size();i+=2*k){
+            if(i+k < s.size()){
+                int j=i+k;
+                for(int k=i;k<j;k++){
+                    char tem;
+                    tem=s[k];
+                    s[k]=s[j-1];
+                    s[j-1]=tem;
+                    j--;
+                }
+                continue;
+            }
+            else{
+                int index=s.size()-1;
+                int j=s.size();
+                for(int k=i;k<j;k++){
+                    char tem;
+                    
+                    tem=s[index];
+                    s[index]=s[k];
+                    s[k]=tem;
+                    index--;
+                    j--;
+                }
+            }
+            
+        }
+        return s;
+    }
+};
