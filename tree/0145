@@ -9,6 +9,8 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
+ //递归法
 // class Solution {
 // public:
 //     void traversal(TreeNode* node, vector<int>&v){
@@ -24,21 +26,49 @@
 //         return result;
 //     }
 // };
+
+//迭代法一
+// class Solution {
+// public:
+//     vector<int> postorderTraversal(TreeNode* root) {
+//         vector<int>result;
+//         stack<TreeNode*>st;
+//         if(root==NULL) return result;
+//         st.push(root);
+//         while(!st.empty()){
+//             TreeNode* tem=st.top();
+//             st.pop();
+//             result.push_back(tem->val);
+//             if(tem->left) st.push(tem->left);
+//             if(tem->right) st.push(tem->right);
+//         }
+//         reverse(result.begin(),result.end());
+//         return result;
+//     }
+// };
+
+//迭代法二
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
         vector<int>result;
         stack<TreeNode*>st;
-        if(root==NULL) return result;
-        st.push(root);
+        if(root!=NULL) st.push(root);
         while(!st.empty()){
-            TreeNode* tem=st.top();
-            st.pop();
-            result.push_back(tem->val);
-            if(tem->left) st.push(tem->left);
-            if(tem->right) st.push(tem->right);
+            TreeNode* node=st.top();
+            if(node!=NULL){
+                st.pop();
+                st.push(node);
+                st.push(NULL);
+                if(node->right) st.push(node->right);
+                if(node->left) st.push(node->left);
+            }
+            else{
+                st.pop();
+                result.push_back(st.top()->val);
+                st.pop();
+            }
         }
-        reverse(result.begin(),result.end());
         return result;
     }
 };
