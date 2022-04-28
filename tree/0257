@@ -1,0 +1,88 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+//迭代法
+class Solution {
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string>result;
+        stack<TreeNode*>st;
+        stack<string>path;
+        if(!root) return result;
+        st.push(root);
+        path.push(to_string(root->val));
+        while(!st.empty()){
+            TreeNode* node=st.top();
+            st.pop();
+            string tempath=path.top();
+            path.pop();
+            if(!node->left&&!node->right) result.push_back(tempath);
+            if(node->right){
+                st.push(node->right);
+                path.push(tempath+"->"+to_string(node->right->val));
+            } 
+            if(node->left){
+                st.push(node->left);
+                path.push(tempath+"->"+to_string(node->left->val));
+            } 
+        }
+        return result;
+    }
+};
+//递归法
+// class Solution {
+// public:
+//     void path(TreeNode* node,string& v,vector<string>& tem){
+//         v=v+"->"+to_string(node->val);
+//         if(node->left==NULL&&node->right==NULL){
+//             tem.push_back(v);
+//             return;
+//         }
+//         string v1=v;
+//         string v2=v;
+//         if(node->left) path(node->left,v1,tem);
+//         if(node->right) path(node->right,v2,tem);
+//     }
+//     vector<string> binaryTreePaths(TreeNode* root) {
+//         vector<string>result;
+//         if(!root) return result;
+//         if(!root->left&&!root->right) result.push_back(to_string(root->val));
+//         if(root->left) {
+//             string tempath=to_string(root->val);
+//             path(root->left,tempath,result);
+//         }
+//         if(root->right){
+//             string tempath=to_string(root->val);
+//             path(root->right,tempath,result);
+//         } 
+//         return result;
+//     }
+// };
+//精简版递归法
+// class Solution {
+// public:
+//     void path(TreeNode* node,string tempath,vector<string>& tem){
+//         tempath=tempath+to_string(node->val);
+//         if(node->left==NULL&&node->right==NULL){
+//             tem.push_back(tempath);
+//             return;
+//         }
+//         if(node->left) path(node->left,tempath+"->",tem);
+//         if(node->right) path(node->right,tempath+"->",tem);
+//     }
+//     vector<string> binaryTreePaths(TreeNode* root) {
+//         vector<string>result;
+//         if(!root) return result; 
+//         string tempath;
+//         path(root,tempath,result);
+//         return result;
+//     }
+// };
