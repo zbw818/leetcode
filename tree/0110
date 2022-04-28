@@ -9,39 +9,86 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {
-public:
-    int maxdepth(TreeNode* node){
-        queue<TreeNode*>qe;
-        if(node==nullptr) return 0;
-        qe.push(node);
-        int depth=0;
-        while(!qe.empty()){
-            int len=qe.size();
-            for(int i=0;i<len;i++){
-                TreeNode* tem=qe.front();
-                qe.pop();
-                if(tem->left) qe.push(tem->left);
-                if(tem->right) qe.push(tem->right);
-            }
-            depth++;
-        }
-        return depth;
-    }
-    bool balanced(TreeNode* node){
-        int leftdepth=maxdepth(node->left);
-        int rightdepth=maxdepth(node->right);
-        return abs(leftdepth-rightdepth)<2;
-    }
-    bool isBalanced(TreeNode* root) {
-        if(root==nullptr) return true;
-        bool flag1=balanced(root);
-        bool flag2=isBalanced(root->left);
-        bool flag3=isBalanced(root->right);
-        return flag1&&flag2&&flag3;
-    }
-};
+//迭代法
+// class Solution {
+// private:
+//     int getDepth(TreeNode* cur) {
+//         stack<TreeNode*> st;
+//         if (cur != NULL) st.push(cur);
+//         int depth = 0; // 记录深度
+//         int result = 0;
+//         while (!st.empty()) {
+//             TreeNode* node = st.top();
+//             if (node != NULL) {
+//                 st.pop();
+//                 st.push(node);                          // 中
+//                 st.push(NULL);
+//                 depth++;
+//                 if (node->right) st.push(node->right);  // 右
+//                 if (node->left) st.push(node->left);    // 左
 
+//             } else {
+//                 st.pop();
+//                 node = st.top();
+//                 st.pop();
+//                 depth--;
+//             }
+//             result = result > depth ? result : depth;
+//         }
+//         return result;
+//     }
+
+// public:
+//     bool isBalanced(TreeNode* root) {
+//         stack<TreeNode*> st;
+//         if (root == NULL) return true;
+//         st.push(root);
+//         while (!st.empty()) {
+//             TreeNode* node = st.top();                       // 中
+//             st.pop();
+//             if (abs(getDepth(node->left) - getDepth(node->right)) > 1) {
+//                 return false;
+//             }
+//             if (node->right) st.push(node->right);           // 右（空节点不入栈）
+//             if (node->left) st.push(node->left);             // 左（空节点不入栈）
+//         }
+//         return true;
+//     }
+// };
+//递归法一
+// class Solution {
+// public:
+//     int maxdepth(TreeNode* node){
+//         queue<TreeNode*>qe;
+//         if(node==nullptr) return 0;
+//         qe.push(node);
+//         int depth=0;
+//         while(!qe.empty()){
+//             int len=qe.size();
+//             for(int i=0;i<len;i++){
+//                 TreeNode* tem=qe.front();
+//                 qe.pop();
+//                 if(tem->left) qe.push(tem->left);
+//                 if(tem->right) qe.push(tem->right);
+//             }
+//             depth++;
+//         }
+//         return depth;
+//     }
+//     bool balanced(TreeNode* node){
+//         int leftdepth=maxdepth(node->left);
+//         int rightdepth=maxdepth(node->right);
+//         return abs(leftdepth-rightdepth)<2;
+//     }
+//     bool isBalanced(TreeNode* root) {
+//         if(root==nullptr) return true;
+//         bool flag1=balanced(root);
+//         bool flag2=isBalanced(root->left);
+//         bool flag3=isBalanced(root->right);
+//         return flag1&&flag2&&flag3;
+//     }
+// };
+//递归法二
 // class Solution {
 // public:
 //     int maxdepth(TreeNode* node){
@@ -61,7 +108,7 @@ public:
 //         return flag1&&flag2&&flag3;
 //     }
 // };
-
+//递归法三
 // class Solution {
 // public:
 //     int maxdepth(TreeNode* node){
@@ -77,3 +124,17 @@ public:
 //         return flag1&&flag2&&flag3;
 //     }
 // };
+
+//递归法四
+class Solution {
+public:
+    int maxdepth(TreeNode* node){
+        if(node==nullptr) return 0;
+        return max(maxdepth(node->left),maxdepth(node->right))+1;
+    }
+    
+    bool isBalanced(TreeNode* root){
+        if(!root) return true;
+        return abs(maxdepth(root->left)-maxdepth(root->right))<2&&isBalanced(root->left)&&isBalanced(root->right);
+    }
+};
