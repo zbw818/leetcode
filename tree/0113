@@ -9,42 +9,72 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+ //迭代法
+// class Solution {
+// public:
+//     vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+//         vector<vector<int> >result;
+//         if(!root) return result;
+//         vector<int>path;
+//         stack<TreeNode*>st;
+//         stack<int>sum;
+//         stack<vector<int> >cur;
+//         path.push_back(root->val);
+//         cur.push(path);
+//         st.push(root);
+//         sum.push(root->val);
+//         while(!st.empty()){
+//             TreeNode* node=st.top();
+//             st.pop();
+//             vector<int>tem=cur.top();
+//             cur.pop();
+//             int cursum=sum.top();
+//             sum.pop();
+//             if(!node->left&&!node->right&&cursum==targetSum) result.push_back(tem);
+//             if(node->right){
+//                 st.push(node->right);
+//                 sum.push(cursum+node->right->val);
+//                 tem.push_back(node->right->val);
+//                 cur.push(tem);
+//                 tem.pop_back();
+//             }
+//             if(node->left){
+//                 st.push(node->left);
+//                 sum.push(cursum+node->left->val);
+//                 tem.push_back(node->left->val);
+//                 cur.push(tem);
+//                 tem.pop_back();
+//             }
+//         }
+//         return result;
+//     }
+// };
+//递归法
 class Solution {
 public:
-    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
-        vector<vector<int> >result;
-        if(!root) return result;
-        vector<int>path;
-        stack<TreeNode*>st;
-        stack<int>sum;
-        stack<vector<int> >cur;
-        path.push_back(root->val);
-        cur.push(path);
-        st.push(root);
-        sum.push(root->val);
-        while(!st.empty()){
-            TreeNode* node=st.top();
-            st.pop();
-            vector<int>tem=cur.top();
-            cur.pop();
-            int cursum=sum.top();
-            sum.pop();
-            if(!node->left&&!node->right&&cursum==targetSum) result.push_back(tem);
-            if(node->right){
-                st.push(node->right);
-                sum.push(cursum+node->right->val);
-                tem.push_back(node->right->val);
-                cur.push(tem);
-                tem.pop_back();
-            }
-            if(node->left){
-                st.push(node->left);
-                sum.push(cursum+node->left->val);
-                tem.push_back(node->left->val);
-                cur.push(tem);
-                tem.pop_back();
-            }
+    vector<vector<int> >result;
+    vector<int>path;
+    void traversal(TreeNode* node,int sum){
+        if(!node->left&&!node->right&&sum==0){
+            result.push_back(path);
+            return;
         }
+        if(!node->left&&!node->right) return;
+        if(node->left){
+            path.push_back(node->left->val);
+            traversal(node->left,sum-node->left->val);
+            path.pop_back();
+        }
+        if(node->right){
+            path.push_back(node->right->val);
+            traversal(node->right,sum-node->right->val);
+            path.pop_back();
+        }
+    }
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        if(!root) return result;
+        path.push_back(root->val);
+        traversal(root,targetSum-root->val);
         return result;
     }
 };
