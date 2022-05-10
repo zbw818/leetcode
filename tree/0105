@@ -1,0 +1,43 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* traversal(vector<int>& preorder, vector<int>& inorder) {
+        if(preorder.empty()) return nullptr;
+        int rootval=preorder[0];
+        TreeNode* node=new TreeNode(rootval);
+
+        if (preorder.size() == 1) return node;
+
+        int rootindex;
+        for(rootindex=0;rootindex<inorder.size();rootindex++){
+            if(inorder[rootindex]==rootval) break;
+        }
+
+        vector<int> leftinorder(inorder.begin(),inorder.begin()+rootindex);
+        vector<int> rightinorder(inorder.begin()+rootindex+1,inorder.end());
+
+        vector<int> tem(preorder.begin()+1,preorder.end());
+
+        vector<int> leftpreorder(tem.begin(),tem.begin()+leftinorder.size());
+        vector<int> rightpreorder(tem.begin()+leftinorder.size(),tem.end());
+
+        node->left=traversal(leftpreorder,leftinorder);
+        node->right=traversal(rightpreorder,rightinorder);
+
+        return node;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if(preorder.empty()||inorder.empty()) return nullptr;
+        return traversal(preorder,inorder);
+    }
+};
