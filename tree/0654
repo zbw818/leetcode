@@ -33,3 +33,35 @@ public:
         return traversal(nums);
     }
 };
+/*
+class Solution {
+public:
+    int maxvalueindex(vector<int> nums){
+        int max=nums[0];
+        int index=0;
+        for(int i=1;i<nums.size();i++){
+            if(nums[i]>max){
+                max=nums[i];
+                index=i;
+            }
+        }
+        return index;
+    }
+    TreeNode* traversal(vector<int>& nums){
+        if(nums.empty()) return NULL;
+        int maxindex=maxvalueindex(nums);
+        TreeNode* node=new TreeNode(nums[maxindex]);
+
+        vector<int> leftsubtree(nums.begin(),nums.begin()+maxindex);
+        vector<int> rightsubtree(nums.begin()+maxindex+1,nums.end());
+        node->left=traversal(leftsubtree);
+        node->right=traversal(rightsubtree);
+
+        return node;
+    }
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        if(nums.empty()) return NULL;
+        return traversal(nums);
+    }
+};
+*/
