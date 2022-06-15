@@ -1,0 +1,78 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+ //递归一
+// class Solution {
+// public:
+//     vector<int> v;
+//     void traversal(TreeNode* root){
+//         if(!root) return;
+//         traversal(root->left);
+//         v.push_back(root->val);
+//         traversal(root->right);
+//     }
+//     int getMinimumDifference(TreeNode* root) {
+//         traversal(root);
+//         if(v.size()<2) return 0;
+//         int result=INT_MAX;
+//         for(int i=1;i<v.size();i++){
+//             if(result>v[i]-v[i-1]) result=v[i]-v[i-1];
+//         }
+//         return result;
+//     }
+// };
+//  //递归二
+// class Solution {
+// public:
+//     int result=INT_MAX;
+//     TreeNode* prenode;
+//     void traversal(TreeNode* root){
+//         if(!root) return;
+//         traversal(root->left);
+//         if(prenode&&root->val-prenode->val<result) result=root->val-prenode->val;
+//         prenode=root;
+//         traversal(root->right);
+//     }
+//     int getMinimumDifference(TreeNode* root) {
+//         traversal(root);
+//         return result;
+//     }
+// };
+ //迭代
+class Solution {
+public:
+    int getMinimumDifference(TreeNode* root) {
+        int result=INT_MAX;
+        if(!root) return 0;
+        stack<TreeNode*>st;
+        st.push(root);
+        TreeNode* pre=NULL;
+        while(!st.empty()){
+            TreeNode* node=st.top();
+            if(node){
+                st.pop();
+                st.push(node->right);
+                st.push(node);
+                st.push(NULL);
+                st.push(node->left);
+            }
+            else{
+                st.pop();
+                if(pre){
+                    result=min(result,st.top()->val-pre->val);
+                }
+                pre=st.top();
+                st.pop();
+            }
+        }
+        return result;
+    }
+};
