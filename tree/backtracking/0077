@@ -1,0 +1,40 @@
+// class Solution {
+// public:
+//     vector<vector<int> >result;
+//     vector<int>vec;
+//     void backtracking(int n,int k,int index){
+//         if(vec.size()==k){
+//             result.push_back(vec);
+//             return;
+//         }
+//         for(int i=index;i<=n;i++){
+//             vec.push_back(i);
+//             backtracking(n,k,i+1);
+//             vec.pop_back();
+//         }
+//     }
+//     vector<vector<int>> combine(int n, int k) {
+//         backtracking(n,k,1);
+//         return result;
+//     }
+// };
+class Solution {
+public:
+    vector<vector<int> >result;
+    vector<int>vec;
+    void backtracking(int n,int k,int index){
+        if(vec.size()==k){
+            result.push_back(vec);
+            return;
+        }
+        for(int i=index;i<=n-(k-vec.size())+1;i++){
+            vec.push_back(i);
+            backtracking(n,k,i+1);
+            vec.pop_back();
+        }
+    }
+    vector<vector<int>> combine(int n, int k) {
+        backtracking(n,k,1);
+        return result;
+    }
+};
