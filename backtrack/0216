@@ -1,0 +1,45 @@
+// class Solution {
+// public:
+//     vector<vector<int> >result;
+//     vector<int>vec;
+//     void backtracking(int val,int k,int index,int n){
+//         if(vec.size()==k){
+//             int sum=0;
+//             for(auto num:vec) sum+=num;
+//             if(sum==n) result.push_back(vec);
+//             return;
+//         }
+//         for(int i=index;i<=val-(k-vec.size())+1;i++){
+//             vec.push_back(i);
+//             backtracking(val,k,i+1,n);
+//             vec.pop_back();
+//         }
+//     }
+//     vector<vector<int>> combinationSum3(int k, int n) {
+//         backtracking(9,k,1,n);
+//         return result;
+//     }
+// };
+class Solution {
+public:
+    vector<vector<int> >result;
+    vector<int>vec;
+    void backtracking(int val,int k,int index,int n,int sum){
+        
+        if(vec.size()==k){
+            if(sum==n) result.push_back(vec);
+            return;
+        }
+        for(int i=index;i<=val-(k-vec.size())+1;i++){
+            sum+=i;
+            vec.push_back(i);
+            backtracking(val,k,i+1,n,sum);
+            sum-=i;
+            vec.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        backtracking(9,k,1,n,0);
+        return result;
+    }
+};
