@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<string> >result;
+    vector<string>path;
+    void backtracking(const string& s,int startindex){
+        if(startindex>=s.size()){
+            result.push_back(path);
+            return;
+        }
+        for(int i=startindex;i<s.size();i++){
+            if(isPalindrome(s,startindex,i)){
+                string str=s.substr(startindex,i-startindex+1);
+                path.push_back(str);
+            }
+            else continue;
+            backtracking(s,i+1);
+            path.pop_back();
+        }
+    }
+    bool isPalindrome(const string& s,int start,int end){
+        for(int i=start,j=end;i<j;i++,j--){
+            if(s[i]!=s[j]) return false;
+        }
+        return true;
+    }
+    vector<vector<string>> partition(string s) {
+        if(s.size()==0) return result;
+        backtracking(s,0);
+        return result;
+    }
+};
