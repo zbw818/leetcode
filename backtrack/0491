@@ -6,7 +6,7 @@ public:
         //path.emplace(nums[0]);
         if(path.size()>=2){
             result.push_back(path);
-            if(startindex==nums.size()) return;
+            //if(startindex==nums.size()) return;//可省略，可以不加终止条件，startIndex每次都会加1，并不会无限递归
         }
         unordered_set<int>uset;
         for(int i=startindex;i<nums.size();i++){
