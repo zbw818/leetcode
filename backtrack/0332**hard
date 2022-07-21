@@ -1,0 +1,28 @@
+class Solution {
+public:
+    unordered_map<string,map<string,int> >targets;
+    bool backtracking(int ticketnum,vector<string>& result){
+        if(result.size()==ticketnum+1){
+            return true;
+        }
+        for(pair<const string,int>& target : targets[result.back()]){
+            if(target.second>0){
+                result.emplace_back(target.first);
+                target.second--;
+                if(backtracking(ticketnum,result)) return true;
+                result.pop_back();
+                target.second++;
+            }
+        }
+        return false;
+    }
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        vector<string>result;
+        for(const vector<string> vec : tickets){
+            targets[vec[0]][vec[1]]++;
+        }
+        result.emplace_back("JFK");
+        backtracking(tickets.size(),result);
+        return result;
+    }
+};
