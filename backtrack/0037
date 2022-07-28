@@ -1,0 +1,84 @@
+//方案一
+// class Solution {
+// public:
+//     bool backtracking(vector<vector<char>>& board,int row){
+//         for(int m=row;m<board.size();m++){
+//             for(int n=0;n<board.size();n++){
+//                 if(board[m][n]!='.') continue;
+//                 for(char k='1';k<='9';k++){
+//                     if(isValid(board,m,n,k)){
+//                         board[m][n]=k;
+//                         if(backtracking(board,row)) return true;
+//                         board[m][n]='.';
+//                     }
+//                 }
+//                 //9个数都试完了，都不行，说明这个棋盘找不到解决数独问题的解！
+//                 //那么就返回false,所以没有终止条件也不会永远填不满棋盘而无限递归下去！
+//                 return false;   
+//             }
+//         }
+//         return true;
+//     }
+//     bool isValid(vector<vector<char>>& board,int row,int col,char val){
+//         for(int i=0;i<board.size();i++){
+//             if(board[row][i]==val) return false;
+//         }
+//         for(int i=0;i<board.size();i++){
+//             if(board[i][col]==val) return false;
+//         }
+//         int subrow=row/3*3;
+//         int subcol=col/3*3;
+//         for(int i=subrow;i<subrow+3;i++){
+//             for(int j=subcol;j<subcol+3;j++){
+//                 if(board[i][j]==val) return false;
+//             }
+//         }
+//         return true;
+//     }
+//     void solveSudoku(vector<vector<char>>& board) {
+//         backtracking(board,0);
+//     }
+// };
+//方案二
+class Solution {
+public:
+    bool rows[9][9];//rows[i][digit]表示数字digit+1是否在第i行出现
+    bool cols[9][9];//cols[j][digit]表示数字digit+1是否在第j列出现
+    bool blocks[3][3][9];//blocks[i/3][j/3][digit]表示数字digit+1是否在第（i/3，j/3）个九宫格内出现
+    bool valid;//表示得到的数独的解法是否有效
+    vector<pair<int,int>>spaces;//空格
+    void backtracking(vector<vector<char>>& board, int pos) {
+        //如果spaces被遍历完了，说明已经填完了空格，将valid改为true，通过return结束这个函数
+        if (pos == spaces.size()) {
+            valid = true;
+            return;
+        }
+        auto [i, j] = spaces[pos];
+        for (int digit = 0; digit < 9 && !valid; ++digit) {
+            if (!rows[i][digit] && !cols[j][digit] && !blocks[i / 3][j / 3][digit]) {
+                rows[i][digit] = cols[j][digit] = blocks[i / 3][j / 3][digit] = true;
+                board[i][j] = digit + '0' + 1;//如果数字digit满足条件，则填入board[i][j]
+                backtracking(board, pos + 1);
+                rows[i][digit] = cols[j][digit] = blocks[i / 3][j / 3][digit] = false;//回溯
+            }
+        }
+    }
+    void solveSudoku(vector<vector<char> >& board) {
+        memset(rows,false,sizeof rows);//初始化
+        memset(cols,false,sizeof cols);
+        memset(blocks,false,sizeof blocks);
+        valid=false;
+        for(int i=0;i<9;++i){
+            for(int j=0;j<9;++j){
+                if(board[i][j]=='.'){
+                    spaces.emplace_back(i,j);//记录没有数字的空格
+                } 
+                else{
+                    int digit=board[i][j]-'0'-1;
+                    rows[i][digit]=cols[j][digit]=blocks[i/3][j/3][digit]=true;//将有数字的对应位置标记为true
+                }
+            }
+        }
+        backtracking(board,0);
+    }
+};
