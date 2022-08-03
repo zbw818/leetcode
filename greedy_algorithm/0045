@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int len=nums.size();
+        int curpos=0,nextpos=0;
+        int step=0;
+        for(int i=0;i<len;i++){
+            nextpos=nextpos>(i+nums[i]) ? nextpos : (i+nums[i]);
+            if(i==curpos){
+                if(curpos!=len-1){
+                    step++;
+                    curpos=nextpos;
+                    if(curpos>=len-1) break;
+                }
+                else break;
+            }
+        }
+        return step;
+    }
+};
+// class Solution {
+// public:
+//     int jump(vector<int>& nums) {
+//         int len=nums.size();
+//         int curpos=0;
+//         int step=0,end=0;
+//         if(len<2) return step;
+//         for(int i=0;i<len-1;i++){
+//             //curpos=max(i+nums[i],curpos);
+//             curpos= curpos>(i+nums[i]) ? curpos : (i+nums[i]);
+//             if(i==end){
+//                 end=curpos;
+//                 step++;
+//             }
+//         }
+//         return step;
+//     }
+// };
