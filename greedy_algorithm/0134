@@ -1,0 +1,36 @@
+// class Solution {
+// public:
+//     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+//         int sumg=0,sumc=0;
+//         for(auto g:gas) sumg+=g;
+//         for(auto c:cost) sumc+=c;
+//         if(sumg<sumc) return -1;
+//         int dis=0;
+//         int index=0;
+//         for(int i=0;i<gas.size();i++){
+//             dis+=gas[i]-cost[i];
+//             if(dis<0){
+//                 dis=0;
+//                 index=i+1;
+//             }
+//         }
+//         return index;
+//     }
+// };
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int dis=0,totaldis=0;
+        int index=0;
+        for(int i=0;i<gas.size();i++){
+            dis+=gas[i]-cost[i];
+            totaldis+=gas[i]-cost[i];
+            if(dis<0){
+                dis=0;
+                index=i+1;
+            }
+        }
+        if(totaldis<0) return -1;
+        return index;
+    }
+};
