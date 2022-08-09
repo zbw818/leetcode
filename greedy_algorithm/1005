@@ -31,7 +31,7 @@ public:
         return abs(a)>abs(b);
     }
     int largestSumAfterKNegations(vector<int>& nums, int k) {
-        sort(nums.begin(),nums.end(),cmp);//按照绝对值从小到大排序
+        sort(nums.begin(),nums.end(),cmp);//按照绝对值从大到小排序
         for(int i=0;i<nums.size();i++){
             if(nums[i]<0 && k>0){
                 nums[i]=-nums[i];
@@ -39,8 +39,8 @@ public:
             }
         }
         if(k>0 && k%2==1){
-            sort(nums.begin(),nums.end());
-            nums[0] *= -1;
+            //sort(nums.begin(),nums.end());
+            nums.back() *= -1;
         }
 
         int sum=0;
