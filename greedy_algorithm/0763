@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<int> partitionLabels(string s) {
+        unordered_map<char,int>um;
+        vector<int>length;
+        for(int i=0;i<s.size();i++){
+            um[s[i]]=i;
+        }
+        int start=0;
+        int end=0;
+        for(int j=0;j<s.size();j++){
+            end=um[s[j]]>end ? um[s[j]] : end;
+            if(j==end){
+                length.emplace_back(end-start+1);
+                start=end+1;
+            }
+        }
+        return length;
+    }
+};
