@@ -1,0 +1,48 @@
+// class Solution {
+// public:
+//     bool isvalid(int& n){
+//         vector<int>item;
+//         int tem=0;
+//         while(n>0){
+//             tem=n%10;
+//             item.emplace_back(tem);
+//             n/=10;
+//         }
+//         reverse(item.begin(),item.end());
+//         //末尾填充一个大于所有个位数的数字，使得下面的遍历界限定位len-1的时候能够取到最后一个个位数
+//         item.emplace_back(10);
+//         int len=item.size(),n0=0;
+//         n=0;
+//         for(int i=0;i<len-1;i++){
+//             n+=(item[i]*pow(10,len-i-2));
+//             if(item[i]>item[i+1]){
+//                 n=n-1;
+//                 isvalid(n);
+//                 break;
+//             }
+//         }
+//         return true;
+//     }
+//     int monotoneIncreasingDigits(int n) {
+//         isvalid(n);
+//         return n;
+//     }
+// };
+
+class Solution {
+public:
+    int monotoneIncreasingDigits(int n) {
+        string str=to_string(n);
+        int start=str.size();
+        for(int i=str.size()-1;i>0;i--){
+            if(str[i-1]>str[i]){
+                start=i;
+                str[i-1]--;
+            }
+        }
+        for(int j=start;j<str.size();j++){
+            str[j]='9';
+        }
+        return stoi(str);
+    }
+};
