@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int camera=0;
+    int traversal(TreeNode* root){
+        /*
+        摄像头可以覆盖上中下三层，如果把摄像头放在叶子节点上，就浪费的一层的覆盖，所以叶子结点不放摄像头
+        大体思路就是从低到上，先给叶子节点父节点放个摄像头，然后隔两个节点放一个摄像头，直至到二叉树头结点
+        0--表示结点没有被覆盖；
+        1--表示结点位置为摄像头
+        2--表示结点没有摄像头，但是被覆盖
+        */
+        if(root==nullptr) return 2;         //空结点，属于被覆盖
+        int left=traversal(root->left);     //
+        int right=traversal(root->right);   //
+        if(left==2&&right==2) return 0;     //case1:左右子节点都被覆盖，则该节点没有被覆盖
+        if(left==0||right==0){              //case2:左右子节点至少一个没有被覆盖，则该节点放置摄像头
+            camera++;
+            return 1;
+        }
+        if(left==1||right==1) return 2;     //case3:左右子节点至少一个放置摄像头，则该节点被覆盖
+        return -1;
+    }
+    int minCameraCover(TreeNode* root) {
+        if(traversal(root)==0) camera++;    //case4:全部处理完后，剩余的根结点root没有被覆盖，则root放置摄像头
+        return camera;
+    }
+};
