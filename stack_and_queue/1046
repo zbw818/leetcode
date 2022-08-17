@@ -1,0 +1,16 @@
+//优先级队列 (大顶堆)
+class Solution {
+public:
+    int lastStoneWeight(vector<int>& stones) {
+        priority_queue<int>pque;
+        for(auto stone:stones) pque.emplace(stone);
+        while(pque.size()>1){
+            int x=pque.top();
+            pque.pop();
+            int y=pque.top();
+            pque.pop();
+            pque.emplace(x-y);
+        }
+        return pque.empty() ? 0:pque.top();
+    }
+};
