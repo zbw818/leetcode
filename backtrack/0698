@@ -1,0 +1,43 @@
+class Solution {
+    /*
+    站在元素的视角，每个元素均需要做出选择被放入哪个子集
+    vector<int>subNumSum 用于存放各个子集当前的元素和
+    */
+public:
+    bool backtracking(vector<int> nums, int index, int k, int targetSum, vector<int>subNumSum){
+        if(index==nums.size()){
+            /*不需要判断，因为当 index == num.length 时，所有球已经按要求装入所有子集，
+            所以肯定是一个满足要求的解*/
+            // for(int i=0;i<k;i++){
+            //     if(subNumSum[i]!=targetSum) return false;
+            // }
+            return true;
+        }
+        for(int i=0;i<k;i++){
+            //对于第一个球，任意放到某个子集中的效果都是一样的，所以规定放到第一个子集中
+            if (i > 0 && index == 0) break;
+            //去重：如果当前子集和上一个子集内的元素和相等，则跳过
+            //因为如果元素和相等，那么nums[index]选择上一个子集和选择当前子集可以得到的结果是一致的
+            if(i>0&&subNumSum[i]==subNumSum[i-1]) continue;
+            if(subNumSum[i]+nums[index]>targetSum) continue;
+            subNumSum[i]+=nums[index];
+            if(backtracking(nums, index+1, k, targetSum, subNumSum)) return true;
+            subNumSum[i]-=nums[index];
+        }
+        return false;
+    }
+    static bool cmp(int a,int b){
+        return a>b;
+    }
+    bool canPartitionKSubsets(vector<int>& nums, int k) {
+        int sum=0;
+        for(auto num:nums) sum+=num;
+        if(sum%k!=0) return false;
+        int targetSum=sum/k;
+        vector<int>subNumSum(k);
+        //nums元素递减排序，大的元素先选择，增加剪枝的命中率，从而降低回溯的概率
+        sort(nums.begin(),nums.end(),cmp);
+        return backtracking(nums, 0, k, targetSum, subNumSum);
+    }
+};
+
