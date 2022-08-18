@@ -1,0 +1,71 @@
+//回溯
+// class Solution {
+// public:
+//     int count=0;
+//     void backtracking(vector<int>& nums,int target,int index,int sum){
+//         if(index==nums.size()){
+//             if(sum==target) count++;
+//         }
+//         else{
+                //对同一个元素分别加“+”和“-”号进行回溯
+//             backtracking(nums,target,index+1,sum+nums[index]);
+//             backtracking(nums,target,index+1,sum-nums[index]);
+//         }
+//     }
+//     int findTargetSumWays(vector<int>& nums, int target) {
+//         backtracking(nums,target,0,0);
+//         return count;
+//     }
+// };
+
+/*
+//动态规划方法一，一维
+// 所有元素和sum                       目标和target
+// 前面加+号的元素和sumPositive         前面加-号的元素和sumNegative
+// sumPositive + sumNegative = sum,    sumPositive - sumNegative = target
+// sumPositive=(sum+target)/2
+//dp[i]表示sumPositive=i的方案数
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int sum=0;
+        for(auto num:nums) sum+=num;
+        if(sum<target || (sum+target)%2!=0) return 0;
+        int sumPositive=(sum+target)/2;
+        vector<int>dp(sumPositive+1);   
+        dp[0]=1;//当没有任何元素可以选取时，元素和只能是 0，对应的方案数是 1
+        for(int i=0;i<nums.size();i++){
+            for(int j=sumPositive;j>=nums[i];j--){
+                dp[j] += dp[j-nums[i]];
+            }
+        }
+        return dp[sumPositive];
+    }
+};*/
+
+//动态规划方法二，二维
+// 所有元素和sum                       目标和target
+// 前面加+号的元素和sumPositive         前面加-号的元素和sumNegative
+// sumPositive + sumNegative = sum,    sumPositive - sumNegative = target
+// sumPositive=(sum+target)/2
+//dp[i][j]表示在数组nums的前i个数中选取元素，使得这些元素之和等于j的方案数
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int sum=0;
+        for(auto num:nums) sum+=num;
+        if(sum<abs(target) || (sum+target)%2!=0) return 0;
+        //if(sum<target || (sum+target)%2!=0) return 0;//-1000 <= target <= 1000
+        int sumPositive=(sum+target)/2;
+        int len=nums.size();
+        vector<vector<int >>dp(len+1,vector<int>(sumPositive+1,0));
+        dp[0][0]=1;//当没有任何元素可以选取时，元素和只能是 0，对应的方案数是 1
+        for(int i=1;i<=len;i++){
+            for(int j=0;j<=sumPositive;j++){
+                dp[i][j]=dp[i-1][j];
+                if(j>=nums[i-1]) dp[i][j]+=dp[i-1][j-nums[i-1]];
+            }
+        }
+        return dp[len][sumPositive];
+    }
+};
