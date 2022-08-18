@@ -1,0 +1,16 @@
+class Solution {
+public:
+    //完全平方数最小为1,最大为sqrt(n),故题目转换为在nums=[1,2.....sqrt(n)]中选任意数平方和为target=n
+    //dp[j]表示在nums中可重复的选取元素，求其平方求和等于j的最少元素个数
+    int numSquares(int n) {
+        int target=(int)sqrt(n);
+        vector<int>dp(n+1,INT_MAX);
+        dp[0]=0;
+        for(int i=1;i<=target;i++){
+            for(int j=0;j<=n;j++){
+                if(j>=i*i) dp[j]=min(dp[j],dp[j-i*i]+1);
+            }
+        }
+        return dp[n];
+    }
+};
