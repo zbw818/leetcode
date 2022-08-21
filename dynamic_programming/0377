@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int combinationSum4(vector<int>& nums, int target) {
+        vector<int>dp(target+1);
+        dp[0]=1;
+        for(int i=1;i<=target;i++){
+            for(int num:nums){
+                if(num<=i && dp[i-num]<INT_MAX-dp[i]) dp[i]+=dp[i-num];
+            }
+        }
+        return dp[target];
+    }
+};
+
+// class Solution {
+// public:
+//     int combinationSum4(vector<int>& nums, int target) {
+//         vector<int>dp(target+1);
+//         dp[0]=1;
+//          //错误写法，因为1+2+1与1+1+2属于不同的组合
+//         for(auto num:nums){
+//             for(int i=1;i<=target;i++){
+//                 if(i>=num) dp[i]+=dp[i-num];
+//             }
+//         }
+//         return dp[target];
+//     }
+// };
